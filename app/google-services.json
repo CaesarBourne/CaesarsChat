@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1081567211606",
+    "firebase_url": "https://caesarschat.firebaseio.com",
+    "project_id": "caesarschat",
+    "storage_bucket": "caesarschat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081567211606:android:aa32ab93f31e82e0",
+        "android_client_info": {
+          "package_name": "com.caesar.ken.caesarschat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081567211606-hvbtn3ntghrldpf7lajouf78qp5bulr7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.caesar.ken.caesarschat",
+            "certificate_hash": "346ff1cd3b5e8b3a833bf06fd296a003c3f3c59c"
+          }
+        },
+        {
+          "client_id": "1081567211606-1iviamrqngsgvkodh8nad4q0qjijd7uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhu4AMoYqMGBx0eyG5QPAAX7cUtvYObrc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081567211606-1iviamrqngsgvkodh8nad4q0qjijd7uk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
