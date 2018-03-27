@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/cyan_A400"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="217dp"
+        android:layout_height="121dp"
+        android:src="@drawable/faxlogo"
+        android:layout_centerHorizontal="true"/>
+
+
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/email"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/edit_text_email_id"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        android:drawableLeft="@drawable/ic_action_user"
+        android:layout_below="@+id/imageView"/>
 
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/password"
+        android:drawableLeft="@drawable/ic_action_password"
         android:id="@+id/edit_text_password"
         android:inputType="textPassword|numberPassword"
-        />
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/space_avg" />
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/edit_text_email_id"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_login"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/edit_text_password"
+            android:layout_centerHorizontal="true"
             android:text="@string/login"/>
         <Button
             android:layout_width="wrap_content"
@@ -41,7 +53,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="@string/login_register"/>
-    </RelativeLayout>
 
 
-</LinearLayout>
+
+</RelativeLayout>
