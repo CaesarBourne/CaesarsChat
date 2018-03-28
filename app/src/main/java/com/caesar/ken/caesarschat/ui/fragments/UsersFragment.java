@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 
 public class UsersFragment extends Fragment implements  ItemClickSupport.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener, UserListingRecyclerAdapter.ItemClicked{
+        SwipeRefreshLayout.OnRefreshListener{
     public static final String TYPE_CHATS = "type chats";
     public static final String TYPE_ALL = "type all";
     public static final String ARG_TYPE = "type";
@@ -39,27 +40,28 @@ public class UsersFragment extends Fragment implements  ItemClickSupport.OnItemC
     public UsersFragment() {
     }
 
-    private UserFragmentInterface userClick;
-    public interface UserFragmentInterface {
-        void userClicked(User user);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            userClick = (UserFragmentInterface) context;
-        }
-        catch (ClassCastException i) {
-            throw new ClassCastException(context.toString()
-                    +" Implement interface to User userFragmentInterface on UserActivity");
-        }
-    }
-    public static UsersFragment newInstance (){
+//    private UserFragmentInterface userClick;
+//    public interface UserFragmentInterface {
+//        void userClicked(User user);
+//    }
+//
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            userClick = (UserFragmentInterface) context;
+//        }
+//        catch (ClassCastException i) {
+//            throw new ClassCastException(context.toString()
+//                    +" Implement interface to User userFragmentInterface on UserActivity");
+//        }
+//    }
+    public static UsersFragment newInstance(String type) {
         Bundle args = new Bundle();
-        UsersFragment usersFragment = new UsersFragment();
-        usersFragment.setArguments(args);
-        return usersFragment;
+        args.putString(ARG_TYPE, type);
+        UsersFragment fragment = new UsersFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
     @Nullable
     @Override
@@ -67,54 +69,55 @@ public class UsersFragment extends Fragment implements  ItemClickSupport.OnItemC
         View viewUsers = inflater.inflate(R.layout.fragment_users, container, false);
         recyclerViewUsers = (RecyclerView) viewUsers.findViewById(R.id.recycler_view_all_user_listing);
         swipeRefreshLayoutUsers = (SwipeRefreshLayout) viewUsers.findViewById(R.id.swipe_refreh_layout);
-        getallusers = new GetUsersMainCore(this);
-        getallusers.getAllUsersFromFirebase();
+
         return viewUsers;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        swipeRefreshLayoutUsers.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayoutUsers.setRefreshing(true);
-            }
-        });
+        //pass the context of this instance to get the users
+        getallusers = new GetUsersMainCore(this);
+        getUsers();
+//        swipeRefreshLayoutUsers.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                swipeRefreshLayoutUsers.setRefreshing(true);
+//            }
+//        });
         ItemClickSupport.addTo(recyclerViewUsers).setOnItemClickListener(this);
         swipeRefreshLayoutUsers.setOnRefreshListener(this);
     }
-//this calls the getusers method in the getUsersMainCore as it gets users registered on firebase and sends them to getAllUsers below
+    //this calls the getusers method in the getUsersMainCore as it gets users registered on firebase and sends them to getAllUsers below
     @Override
     public void onRefresh() {
-        //getallusers.getAllUsersFromFirebase();
-    }
-//this is triggered by the onRefresh above to iterate through the database to get all users for the
-    public void getallUsersSuccess (List<User> users ){
-        swipeRefreshLayoutUsers.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayoutUsers.setRefreshing(false);
-            }
-        });//pass the users fetched from database to the recyclerview adapter for users
-        Log.i("UserFragment", "saw list");
-        myuserListingRecyclerAdapter = new UserListingRecyclerAdapter(users, this);
-        recyclerViewUsers.setAdapter(myuserListingRecyclerAdapter);
-        myuserListingRecyclerAdapter.notifyDataSetChanged();
+//        getallusers.getAllUsersFromFirebase();
     }
 
-    @Override
-    public void onItemSelected(User user) {
-        userClick.userClicked(user);
-    }
-
-    //this below gets the recieverUid and token with the email saved earlier  under  and pass it to chat fragment to use to send message to receiver
-//the position o0f the clicked item is used to get the firebase token saved earlier for the user and pased to the constantsUid
-    //the startActivity method is used to start the ChatActivity with the intent in the startActivity method i.e getActivity here is passed
+    //    private void getUsers() {
+//        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
 //
+//        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
+//            //this adds the arraylist of users to the gett all users for success below through the get all usersFromFirebase method
+//            getallusers.getAllUsersFromFirebase();
+//        }
+//    }
+//this is triggered by the onRefresh above to iterate through the database to get all users for the
+
+    private void getUsers() {
+        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
+
+        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
+            //this adds the arraylist of users to the gett all users for success below through the get all usersFromFirebase method
+            getallusers.getAllUsersFromFirebase();
+        }
+    }
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
+        ChatActivity.startActivity(getActivity(),
+                myuserListingRecyclerAdapter.getUser(position).email,
+                myuserListingRecyclerAdapter.getUser(position).uid,
+                myuserListingRecyclerAdapter.getUser(position).token);
     }
     public void onGetAllUsersFailure(String message) {
         swipeRefreshLayoutUsers.post(new Runnable() {
@@ -125,4 +128,27 @@ public class UsersFragment extends Fragment implements  ItemClickSupport.OnItemC
         });
         Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
-}
+
+    public void getallUsersSuccess (List<User> users ){
+        swipeRefreshLayoutUsers.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayoutUsers.setRefreshing(false);
+            }
+        });//pass the users fetched from database to the recyclerview adapter for users
+        Log.i("UserFragment", "saw list");
+        myuserListingRecyclerAdapter = new UserListingRecyclerAdapter(users);
+        recyclerViewUsers.setAdapter(myuserListingRecyclerAdapter);
+        myuserListingRecyclerAdapter.notifyDataSetChanged();
+    }
+
+//    @Override
+//    public void onItemSelected(User user) {
+//        userClick.userClicked(user);
+//    }
+
+    //this below gets the recieverUid and token with the email saved earlier  under  and pass it to chat fragment to use to send message to receiver
+//the position o0f the clicked item is used to get the firebase token saved earlier for the user and pased to the constantsUid
+    //the startActivity method is used to start the ChatActivity with the intent in the startActivity method i.e getActivity here is passed
+//
+  }

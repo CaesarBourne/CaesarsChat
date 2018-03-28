@@ -29,28 +29,23 @@ public class UserListingRecyclerAdapter extends RecyclerView.Adapter<UserListing
         void onItemSelected(User user);
     }
 
-    public UserListingRecyclerAdapter(List<User> users, ItemClicked itemClicked) {
+    public UserListingRecyclerAdapter(List<User> users) {
         this.myUsers = users;
         this.itemClicked = itemClicked;
     }
     //viewholder must be declared static to pass views to it
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView alphabetText, usernameText;
+
         //this is needed to pass the view to the constructor which is a metadata
         ViewHolder(View itemView) {
             super(itemView);
             alphabetText = (TextView) itemView.findViewById(R.id.text_view_all_user_alphabet);
             usernameText = (TextView) itemView.findViewById(R.id.text_view_username);
 
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            itemClicked.onItemSelected(myUsers.get(position));
         }
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,11 +72,11 @@ public class UserListingRecyclerAdapter extends RecyclerView.Adapter<UserListing
         if (myUsers != null){
             return myUsers.size();
         }
-        else
+
             return 0;
     }
- //return the users pon the arraylist with the positio passed from the view and itis later used to start the chat activity
-    public User getUsers (int position){
+ //return the users on the arraylist with the positio passed from the view and itis later used to start the chat activity
+    public User getUser (int position){
         return myUsers.get(position);
     }
 

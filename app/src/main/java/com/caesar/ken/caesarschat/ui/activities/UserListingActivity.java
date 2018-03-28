@@ -25,8 +25,7 @@ import com.caesar.ken.caesarschat.utils.Constants;
  * Created by e on 3/15/2018.
  */
 
-public class UserListingActivity extends AppCompatActivity implements
-        UsersFragment.UserFragmentInterface{
+public class UserListingActivity extends AppCompatActivity {
     private TabLayout mytabLayout;
     private ViewPager myviewPager;
     private Toolbar myToolbar;
@@ -48,16 +47,14 @@ public class UserListingActivity extends AppCompatActivity implements
         mytabLayout = (TabLayout) findViewById(R.id.tab_layout_user_listing);//TabLayout provides a horizontal layout to display tabs.
         myviewPager = (ViewPager) findViewById(R.id.view_pager_user_listing);/*Layout manager is a view that allows the user to flip left
                                                                                     and right through pages of data.*/
+        logoutMainCore = new LogoutMainCore(this);
         myToolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        setSupportActionBar(myToolbar);
 //the support fragment manager below is gotten from the fragment attached to this activity in this case its the fragmentuserList which is a linearMa
         UserListingPageAdapter userListingPageAdapter = new UserListingPageAdapter(getSupportFragmentManager());
         myviewPager.setAdapter(userListingPageAdapter);
         //attach tab layout with the view pager  below and bind views from the viewpager to the tablayout
         mytabLayout.setupWithViewPager(myviewPager);
-
-        /*getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new UsersFragment(), "users").commit();*/
 
 
     }
@@ -107,12 +104,12 @@ public class UserListingActivity extends AppCompatActivity implements
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void userClicked(User user) {
-        Intent intent = new Intent(UserListingActivity.this, ChatActivity.class);
-        intent.putExtra(Constants.ARG_RECEIVER, user.email);
-        intent.putExtra(Constants.ARG_RECEIVER_UID, user.uid);
-        intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.token);
-        startActivity(intent);
-    }
+//    @Override
+//    public void userClicked(User user) {
+//        Intent intent = new Intent(UserListingActivity.this, ChatActivity.class);
+//        intent.putExtra(Constants.ARG_RECEIVER, user.email);
+//        intent.putExtra(Constants.ARG_RECEIVER_UID, user.uid);
+//        intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.token);
+//        startActivity(intent);
+//    }
 }

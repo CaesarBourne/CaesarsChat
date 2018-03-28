@@ -11,8 +11,12 @@ import com.caesar.ken.caesarschat.ui.fragments.UsersFragment;
  */
 
 public class UserListingPageAdapter extends FragmentPagerAdapter {
-    private static final Fragment[] sFragments = new Fragment[]{
-            UsersFragment.newInstance()};
+    private static final Fragment[] sFragments = new Fragment[]{/*UsersFragment.newInstance(UsersFragment.TYPE_CHATS),*/
+            UsersFragment.newInstance(UsersFragment.TYPE_ALL)};
+//    private static final Fragment[] sFragments = new Fragment[]{
+//            UsersFragment.newInstance()};
+//    private static final Fragment[] sFragments = new Fragment[UsersFragment.TYPE_ALL)]{
+//            UsersFragment.newInstance()};
     private static final String[] sTitles = new String[]{
             "All Users"};
 //the fragment manager from the attached fragment

@@ -11,6 +11,10 @@ public class LogoutMainCore {
 
     UserListingActivity userListingActivity;
 
+    public LogoutMainCore(UserListingActivity userListingActivity) {
+        this.userListingActivity = userListingActivity;
+    }
+
     public void onPerformFirebaseLogout(){
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
