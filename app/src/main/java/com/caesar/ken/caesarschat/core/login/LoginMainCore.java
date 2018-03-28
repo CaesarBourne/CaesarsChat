@@ -25,7 +25,7 @@ public class LoginMainCore {
 
     public LoginMainCore(LoginFragment loginFragment) {
         this.loginFragment = loginFragment;
-    }
+     }
 
     public void performFirebaseLogin(final Activity activity, final String email, String password){
 
@@ -38,9 +38,10 @@ public class LoginMainCore {
                         Log.d(TAG, "performFiirebaseLogin:onComplete"+task.isSuccessful());
 
                         if (task.isSuccessful()){
-                            loginFragment.onLoginSuccesful(task.getResult().toString());
                             onUpdateFirebaseToken(task.getResult().getUser().getUid(),
-                                    new SharedPrefUtil(activity.getApplicationContext()).getString(Constants.ARG_FIREBASE_TOKEN, null));
+                                    new SharedPrefUtil(activity.getApplicationContext())
+                                            .getString(Constants.ARG_FIREBASE_TOKEN, null));
+                            loginFragment.onLoginSuccesful(task.getResult().toString());
                         }
                         else {
                             loginFragment.onLoginFailure(task.getException().getMessage());

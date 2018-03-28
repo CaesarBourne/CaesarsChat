@@ -16,13 +16,17 @@ import android.widget.Toast;
 
 import com.caesar.ken.caesarschat.R;
 import com.caesar.ken.caesarschat.core.logout.LogoutMainCore;
+import com.caesar.ken.caesarschat.models.User;
 import com.caesar.ken.caesarschat.ui.adapters.UserListingPageAdapter;
+import com.caesar.ken.caesarschat.ui.fragments.UsersFragment;
+import com.caesar.ken.caesarschat.utils.Constants;
 
 /**
  * Created by e on 3/15/2018.
  */
 
-public class UserListingActivity extends AppCompatActivity{
+public class UserListingActivity extends AppCompatActivity implements
+        UsersFragment.UserFragmentInterface{
     private TabLayout mytabLayout;
     private ViewPager myviewPager;
     private Toolbar myToolbar;
@@ -51,6 +55,11 @@ public class UserListingActivity extends AppCompatActivity{
         myviewPager.setAdapter(userListingPageAdapter);
         //attach tab layout with the view pager  below and bind views from the viewpager to the tablayout
         mytabLayout.setupWithViewPager(myviewPager);
+
+        /*getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new UsersFragment(), "users").commit();*/
+
+
     }
 
     @Override
@@ -96,5 +105,14 @@ public class UserListingActivity extends AppCompatActivity{
     }
     public void logoutFailure(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void userClicked(User user) {
+        Intent intent = new Intent(UserListingActivity.this, ChatActivity.class);
+        intent.putExtra(Constants.ARG_RECEIVER, user.email);
+        intent.putExtra(Constants.ARG_RECEIVER_UID, user.uid);
+        intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.token);
+        startActivity(intent);
     }
 }

@@ -1,6 +1,7 @@
 package com.caesar.ken.caesarschat.ui.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +26,26 @@ import java.util.zip.Inflater;
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
+
+    public LoginFragment() {
+    }
+
+    private LoginFragmentInterface login;
+    public interface LoginFragmentInterface {
+        void startActivityNow();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            login = (LoginFragmentInterface) context;
+        }
+        catch (ClassCastException i) {
+            throw new ClassCastException(context.toString()
+                    +" Implement interface to LoginFragmentInterface on LoginActivity");
+        }
+    }
 
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
@@ -79,6 +100,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.button_login:
                 onLogin(v);
+                break;
             case R.id.button_register:
                 onRegister(v);
                 break;
@@ -96,7 +118,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
     public void onLoginSuccesful(String message){
         Toast.makeText(getActivity(),"Login successful: "+message,Toast.LENGTH_SHORT).show();
-        UserListingActivity.startActivity(getActivity(), Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        login.startActivityNow();
     }
     public void onLoginFailure(String message){
         Toast.makeText(getActivity(), "Erron in "+ message,Toast.LENGTH_SHORT).show();

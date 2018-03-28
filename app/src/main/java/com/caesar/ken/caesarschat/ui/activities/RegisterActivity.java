@@ -14,7 +14,8 @@ import com.caesar.ken.caesarschat.ui.fragments.RegisterFragment;
  * Created by e on 2/21/2018.
  */
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity
+        implements RegisterFragment.RegistrationFragmentInterface{
     private Toolbar mtoolbar;
     public static void startActivity(Context context){
         Intent intent = new Intent(context, RegisterActivity.class);// make the splash activity context start the register activity
@@ -38,5 +39,10 @@ public class RegisterActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout_content_register,
                                 RegisterFragment.newInstance(), RegisterFragment.class.getSimpleName() );
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void startActivityNow() {
+        startActivity(new Intent(RegisterActivity.this, UserListingActivity.class));
     }
 }

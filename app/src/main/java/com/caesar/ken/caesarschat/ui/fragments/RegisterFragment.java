@@ -27,6 +27,22 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private Button buttonRegister;
     private RegisterMainCore registrationChild;
 
+    private RegistrationFragmentInterface registration;
+    public interface RegistrationFragmentInterface {
+        void startActivityNow();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            registration = (RegistrationFragmentInterface) context;
+        }
+        catch (ClassCastException i) {
+            throw new ClassCastException(context.toString()
+                    +" Implement interface to LoginFragmentInterface on RegistrationActivity");
+        }
+    }
     public static RegisterFragment newInstance(){
         Bundle args = new Bundle();
         RegisterFragment registerFragment = new RegisterFragment();
@@ -89,6 +105,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
     public void onAddUserSuccess(String message){
         Toast.makeText(getActivity(),message, Toast.LENGTH_LONG).show();
+        registration.startActivityNow();
     }
     public void onAddUserFailure(String message){
         Toast.makeText(getActivity(),message, Toast.LENGTH_LONG).show();

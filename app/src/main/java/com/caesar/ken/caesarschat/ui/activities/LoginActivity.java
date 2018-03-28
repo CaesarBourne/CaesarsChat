@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.caesar.ken.caesarschat.R;
 import com.caesar.ken.caesarschat.ui.fragments.LoginFragment;
@@ -16,8 +17,9 @@ import com.caesar.ken.caesarschat.ui.fragments.LoginFragment;
  * Created by Caesar on 2/21/2018.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface{
 
+    private String LOG_TAG =LoginActivity.class.getSimpleName();
     Toolbar mtoolbar;
     public static void startIntent(Context context){
         Intent intent = new Intent(context, LoginActivity.class);
@@ -45,5 +47,13 @@ public class LoginActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout_content_login,
                 LoginFragment.newInstance(), LoginFragment.class.getSimpleName()  );
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void startActivityNow() {
+        /*UserListingActivity.startActivity(LoginActivity.this,
+                Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);*/
+        Log.i(LOG_TAG, "Login UserList");
+        startActivity(new Intent(LoginActivity.this, UserListingActivity.class));
     }
 }

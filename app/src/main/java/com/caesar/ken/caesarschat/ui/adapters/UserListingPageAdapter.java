@@ -35,4 +35,9 @@ public class UserListingPageAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return sTitles[position];
     }
+
+    /*public void addFragment(Fragment fragment, String title) {
+        sFragments.add(fragment);
+        sTitles.add(title);
+    }*/
 }

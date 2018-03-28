@@ -19,17 +19,36 @@ import java.util.List;
 public class UserListingRecyclerAdapter extends RecyclerView.Adapter<UserListingRecyclerAdapter.ViewHolder>{
     List<User> myUsers;
 
-    public UserListingRecyclerAdapter(List<User> users) {
+    private ItemClicked itemClicked;
+
+    public void setItemClicked(ItemClicked itemClicked) {
+        this.itemClicked = itemClicked;
+    }
+
+    public interface ItemClicked {
+        void onItemSelected(User user);
+    }
+
+    public UserListingRecyclerAdapter(List<User> users, ItemClicked itemClicked) {
         this.myUsers = users;
+        this.itemClicked = itemClicked;
     }
     //viewholder must be declared static to pass views to it
-     static class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView alphabetText, usernameText;
         //this is needed to pass the view to the constructor which is a metadata
         ViewHolder(View itemView) {
             super(itemView);
             alphabetText = (TextView) itemView.findViewById(R.id.text_view_all_user_alphabet);
             usernameText = (TextView) itemView.findViewById(R.id.text_view_username);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            itemClicked.onItemSelected(myUsers.get(position));
         }
     }
 
@@ -42,8 +61,11 @@ public class UserListingRecyclerAdapter extends RecyclerView.Adapter<UserListing
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         User initializedUser = myUsers.get(position);
-        String username = initializedUser.email;
-        String alphabet = initializedUser.email.substring(0,2);
+        String username ="", alphabet ="";
+        if(null != initializedUser.email) {
+            username = initializedUser.email;
+            alphabet = initializedUser.email.substring(0,2);
+        }
 
         holder.alphabetText.setText(alphabet);
         holder.usernameText.setText(username);
@@ -53,9 +75,10 @@ public class UserListingRecyclerAdapter extends RecyclerView.Adapter<UserListing
     public int getItemCount() {
         //if the array list is not empty
         if (myUsers != null){
-            myUsers.size();
+            return myUsers.size();
         }
-        return 0;
+        else
+            return 0;
     }
  //return the users pon the arraylist with the positio passed from the view and itis later used to start the chat activity
     public User getUsers (int position){
